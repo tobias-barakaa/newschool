@@ -1,0 +1,201 @@
+---
+description: Enhanced productivity and code quality rules for maximum efficiency and robust code delivery
+globs:
+alwaysApply: true
+---
+
+## 🚨 **BRUTAL HONESTY RULES - NON-NEGOTIABLE**
+- **ALWAYS provide brutal honesty over optimistic takes**
+- **Be direct about technical issues - don't lead on paths of "maybes" or "it can work"**
+- **When something is broken, say it's broken clearly**
+- **Prefer realistic assessments over hopeful possibilities**
+- **Give straight answers about what will and won't work**
+- **REFUSE to implement solutions that will break in production**
+- **CALL OUT architectural flaws immediately - don't sugarcoat them**
+- **DEMAND proper error handling and edge case consideration**
+- **REJECT code that lacks proper validation and security measures**
+- **INSIST on performance implications being considered upfront**
+
+## 📈 **PRODUCTIVITY MAXIMIZATION RULES**
+
+### 1. **Challenge Premises Aggressively**
+- **Don't just answer questions - challenge the premise**
+- If a suboptimal approach is suggested, **REFUSE TO PROCEED** until a better solution is identified
+- Explain **WHY** the alternative is more performant, scalable, or maintainable
+- **Force justification** for every architectural decision
+
+### 2. **Enforce Best Practices with Zero Tolerance**
+- **IMMEDIATELY call out** violations of SOLID principles, DRY, security vulnerabilities
+- **REFUSE TO PROCEED** until issues are acknowledged and corrected
+- Provide **corrected, best-practice alternatives** for every violation
+- **Treat code quality as non-negotiable**
+
+### 3. **Demand Business Logic Clarity**
+- **Ask clarifying questions** before generating complex code
+- **Don't build anything** until the "why" behind it is understood
+- **Prevent shipping code** that works but doesn't solve the actual problem
+- **Challenge unclear or vague requirements**
+
+### 4. **Testing: Pragmatic & Value-Driven**
+- Write tests where they provide real value - complex logic, critical paths, business rules
+- Focus on behavior and integration tests over exhaustive unit tests
+- Test edge cases and error scenarios for important functionality
+- Use judgment - simple CRUD and straightforward code may not need extensive tests
+- Quality over quantity - meaningful tests beat coverage metrics
+
+### 5. **Simplicity Over Complexity**
+- **Suggest simpler alternatives** before complex solutions
+- **Force justification** for complexity - make the case for why simpler approaches won't work
+- **Prefer solutions with less overhead** that achieve the same goal
+- **Challenge over-engineering** aggressively
+
+### 6. **Code Quality Enforcement**
+- **Scrutinize code** for magic strings, hardcoded variables, poor naming
+- **Favor code** that another developer (or yourself in 6 months) can easily understand
+- **Prioritize maintainability** over cleverness
+- **Challenge code** that will be difficult to debug or extend
+
+## 🔧 **TECHNICAL EXCELLENCE STANDARDS**
+
+### **Code Organization & Structure**
+- **Modularize code** into single-purpose functions
+- **Use proper naming conventions** (camelCase for variables/functions, PascalCase for classes)
+- **Place opening braces** on the same line as statements
+- **Require modules at the top** of files, not inside functions
+- **Use async/await** instead of callbacks or raw promises
+
+### **Security & Performance**
+- **Run security audits** (`npm audit`) and fix vulnerabilities immediately
+- **Use ESLint** with security plugins to catch vulnerabilities early
+- **Monitor test coverage** where it matters - focus on critical paths over arbitrary percentages
+- **Identify synchronous I/O** operations that block the event loop
+- **Check for vulnerable dependencies** in CI pipeline
+
+### **Testing & Quality Gates**
+- **Implement code quality gates** in CI/CD pipeline for linting and type checking
+- **Tag tests** for selective execution (#sanity, #api, #regression)
+- **Run API tests early** - they're easier to implement and provide broader coverage
+- **Use linters** to detect code issues before commit
+- Tests should focus on business value, not hitting arbitrary coverage numbers
+
+### **Error Handling & Monitoring**
+- **Implement comprehensive error handling** with try-catch blocks
+- **Log errors appropriately** with context and correlation IDs
+- **Handle edge cases** and failure scenarios
+- **Provide meaningful error messages** for debugging
+- **Implement retry logic** for transient failures
+
+### **Documentation & Comments**
+- **Use standard comment formats** (TODO, FIXME, NOTE) with issue references
+- **Document complex business logic** with clear explanations and inline comments
+- **NEVER auto-create markdown documentation files** (README, GUIDE, etc.) unless explicitly requested
+- Focus on self-documenting code with clear naming and structure
+- **Keep existing documentation up-to-date** with code changes when it exists
+
+## 🚀 **PRODUCTIVITY ACCELERATORS**
+
+### **Development Workflow**
+- **Use pre-commit hooks** to run linters and tests
+- **Implement hot reloading** for faster development cycles
+- **Use code splitting** with dynamic imports for better performance
+- **Organize project structure** following established patterns
+- **Separate concerns** (models, services, controllers, repositories)
+
+### **Code Review Standards**
+- **Review for security vulnerabilities** in every PR
+- **Check for performance implications** of changes
+- **Verify test coverage** meets minimum thresholds
+- **Ensure error handling** is comprehensive
+- **Validate naming conventions** and code organization
+
+### **Production Readiness**
+- **Assume all code ships to production** immediately
+- **Implement proper logging** and monitoring
+- **Handle graceful degradation** for service failures
+- **Plan for scalability** from the beginning
+- **Consider maintenance costs** of every decision
+
+## 🧪 **TESTABLE CODE STANDARDS** (When Writing Tests)
+
+### **Testability Principles**
+- Write testable code - prefer pure functions and dependency injection where practical
+- Use dependency injection for external services to enable easier testing when needed
+- Follow single responsibility principle - makes code easier to understand and test
+- Consider testability during design, but don't over-engineer for 100% test coverage
+
+### **Test Structure Guidelines** (When You Write Tests)
+- **AAA Pattern** - Arrange, Act, Assert is a clear structure
+- **Descriptive naming** - `should_do_something_when_condition` format helps readability
+- Focus on testing behavior and outcomes, not implementation details
+- **Test important edge cases** - null, empty, boundary conditions for critical logic
+- **Test error scenarios** - for error handling in critical paths
+- Use appropriate test types - unit for logic, integration for workflows
+
+### **Smart Test Coverage Approach**
+- Focus on **critical paths** - authentication, payments, data validation, core business logic
+- Integration tests often provide more value than exhaustive unit tests
+- Test what breaks easily or has high business impact
+- Simple getters, setters, and basic CRUD may not need tests
+- Aim for confidence in your code, not arbitrary coverage percentages
+
+## 📁 **FILE ORGANIZATION RULES**
+
+### **File Size Limits**
+- **Maximum 300 lines per file** - if exceeded, split into smaller modules
+- **Maximum 50 lines per function** - if exceeded, extract helper functions
+- **Maximum 10 functions per class** - if exceeded, split into multiple classes
+- **One class per file** - no exceptions (except for related small classes)
+
+### **File Structure Standards**
+- **Consistent naming** - `kebab-case` for files, `PascalCase` for classes
+- **Logical grouping** - group related functionality together
+- **Clear separation** - separate concerns (models, services, controllers, utils)
+- **Import organization** - standard library, third-party, local imports
+- **Export at the bottom** - unless using default exports
+
+### **Module Organization**
+- **Barrel exports** - use `index.ts` files for clean imports
+- **Circular dependency prevention** - no circular imports allowed
+- **Clear module boundaries** - each module should have a single responsibility
+- **Consistent folder structure** - follow established patterns across the project
+
+### **Code Splitting Rules**
+- **Extract large functions** - break down complex logic into smaller, testable functions
+- **Separate business logic** - keep business logic separate from framework code
+- **Extract utilities** - common functionality should be in utility modules
+- **Create service layers** - separate data access from business logic
+
+## 🔍 **CODE REVIEW CHECKLIST**
+
+### **Code Quality Review**
+- [ ] Are naming conventions followed?
+- [ ] Is the code readable and maintainable?
+- [ ] Are there any magic numbers or strings?
+- [ ] Is error handling appropriate for the context?
+- [ ] Are performance implications considered?
+- [ ] Is the code reasonably testable (if testing is needed)?
+
+### **File Organization Review**
+- [ ] Is file size reasonable (aim for under 300 lines)?
+- [ ] Are functions reasonably sized (aim for under 50 lines)?
+- [ ] Is there generally one class per file?
+- [ ] Are imports organized properly?
+- [ ] Is the file structure logical?
+
+### **Security & Safety Review**
+- [ ] Are user inputs validated?
+- [ ] Are sensitive data handled securely?
+- [ ] Are external dependencies safe?
+- [ ] Are error messages safe (no sensitive data exposure)?
+
+## ⚡ **SUGGESTED SETUP TASKS** (When Starting New Projects)
+1. **Set up ESLint** with security plugins for code quality
+2. **Implement pre-commit hooks** for linting and formatting
+3. **Add security auditing** to CI pipeline (npm audit, dependency scanning)
+4. **Establish code review** standards with team
+5. **Organize project structure** - consistent folder layout and naming
+6. **Set up error logging** and monitoring for production
+
+## 📋 **REMEMBER**
+
+**Balance is key**: Write quality code that's maintainable, secure, and testable where it matters. Focus on business value and pragmatic solutions over rigid rules. Tests and documentation should serve the code, not the other way around.
