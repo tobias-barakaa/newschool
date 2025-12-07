@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ✅ Nest it properly
+  // ✅ CRITICAL: Enable standalone output for Docker
+  output: 'standalone',
+  
+  // Disable ESLint during builds
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -9,7 +12,7 @@ const nextConfig: NextConfig = {
   // Configure server external packages
   serverExternalPackages: [],
   
-  // Configure headers for better caching control
+  // Configure headers for better security and caching
   async headers() {
     return [
       {
