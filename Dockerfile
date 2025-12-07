@@ -1,28 +1,27 @@
-# ============================================
-# Slim runtime-only Dockerfile for Next.js 15
-# ============================================
-
-FROM node:20-alpine
-
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
-
-# Install only production dependencies
-RUN npm ci --omit=dev
-
-# Copy built Next.js app
-COPY .next ./.next
-COPY public ./public
-
-# Set environment
+# Set production environment
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy pre-built files
+COPY --chown=nextjs:nodejs ./.next ./.next
+COPY --chown=nextjs:nodejs ./public ./public
+COPY package.json package-lock.json* ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+USER nextjs
 
 EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Start the application
 CMD ["node", "server.js"]
 
