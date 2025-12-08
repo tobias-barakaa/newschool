@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+        "build": "tsc -p tsconfig.build.json",
+    
     "start": "next start",
     "lint": "next lint",
-    "start:prod": "next start",
+    "start:prod": "node dist/main.js",
+    
     "clear-cache": "node scripts/clear-cache.js"
+
   },
   "dependencies": {
     "@apollo/client": "^3.8.10",
