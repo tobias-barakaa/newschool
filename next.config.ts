@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ✅ CRITICAL: Enable standalone output for Docker
-  output: 'standalone',
+  // 🔴 REMOVE standalone output - it doesn't work well with Bun
+  // output: 'standalone',
   
   // Disable ESLint during builds
   eslint: {
