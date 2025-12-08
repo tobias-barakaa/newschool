@@ -1,30 +1,34 @@
+# Dependencies stage
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
+
 # Builder stage
-FROM oven/bun:1-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-COPY package.json bun.lockb* ./
-RUN bun install --frozen-lockfile
-
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bun run build
+RUN npm run build
 
-# Production stage  
-FROM oven/bun:1-alpine
+# Production stage
+FROM node:20-alpine
 WORKDIR /app
-
-# Copy everything needed for production
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/bun.lockb* ./
-COPY --from=builder /app/next.config.* ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+USER nextjs
+
 EXPOSE 3000
 
-# Use Node.js to run Next.js (Bun doesn't fully support Next.js standalone yet)
-CMD ["./node_modules/.bin/next", "start", "-p", "3000"]
+CMD ["npm", "run", "start:prod"]
