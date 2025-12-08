@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
   "dev": "next dev",
-  "start": "next start",
-  "lint": "next lint",
   "build": "next build",
   "start:prod": "next start -p 3000",
+  "lint": "next lint",
   "clear-cache": "node scripts/clear-cache.js"
 },
   "dependencies": {
