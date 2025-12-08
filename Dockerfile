@@ -1,27 +1,33 @@
-FROM node:20-alpine AS runner
+# Use official Bun image
+FROM oven/bun:1-alpine AS builder
+
+# Set working directory
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# Copy package files
+COPY package.json bun.lockb* ./
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Install dependencies
+RUN bun install --frozen-lockfile
 
-# Copy pre-built files
-COPY --chown=nextjs:nodejs ./.next ./.next
-COPY --chown=nextjs:nodejs ./public ./public
-COPY package.json package-lock.json* ./
+# Copy the rest of the app
+COPY . .
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Build the app
+RUN bun run build
 
-USER nextjs
+# --- Production image ---
+FROM oven/bun:1-alpine
 
+WORKDIR /app
+
+# Copy only the built files and necessary configs
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+# Expose the port
 EXPOSE 3000
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
-
+# Start the app using Bun
+CMD ["bun", "run", "start:prod"]
