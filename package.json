@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-        "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.json",
+  "start:prod": "node dist/main.js",
     
     "start": "next start",
     "lint": "next lint",
-    "start:prod": "node dist/main.js",
     
     "clear-cache": "node scripts/clear-cache.js"
 
