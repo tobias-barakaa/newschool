@@ -1,34 +1,30 @@
 # Builder stage
-FROM node:20-alpine AS builder
+FROM oven/bun:1-alpine AS builder
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
+COPY package.json bun.lockb* ./
+RUN bun install --frozen-lockfile
 
-# Install dependencies
-RUN npm ci
-
-# Copy source code
 COPY . .
+RUN bun run build
 
-# Build Next.js app (this creates the standalone build)
-RUN npm run build
-
-# Production stage
-FROM node:20-alpine
+# Production stage  
+FROM oven/bun:1-alpine
 WORKDIR /app
 
-# Copy the standalone output
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Copy everything needed for production
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/bun.lockb* ./
+COPY --from=builder /app/next.config.* ./
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 EXPOSE 3000
 
-# Start the standalone server
-CMD ["node", "server.js"]
+# Use Node.js to run Next.js (Bun doesn't fully support Next.js standalone yet)
+CMD ["./node_modules/.bin/next", "start", "-p", "3000"]
